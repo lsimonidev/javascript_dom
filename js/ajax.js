@@ -5,21 +5,29 @@ btnBuscar.addEventListener("click", function(){
     let request = new XMLHttpRequest();
 
     request.open("GET","https://api-pacientes.herokuapp.com/pacientes"); //abre a conexão
-    request.send(); //envia a requisição criada
+    
+    var msgErro = document.querySelector("#erro-ajax");
 
     request.addEventListener("load", function(){
-        let pacientes = JSON.parse(request.responseText);
+        if(request.status == 200){
+            msgErro.classList.add("hidden");
+            let pacientes = JSON.parse(request.responseText);
+            pacientes.forEach(paciente => {
+                montaTr(
+                    paciente.nome, 
+                    paciente.peso,
+                    paciente.altura,
+                    paciente.gordura,
+                    paciente.imc);
+            });            
+        } else {
+            msgErro.classList.remove("hidden");
+            msgErro.textContent = "ERRO: "+request.status;
+        }
 
-        pacientes.forEach(paciente => {
-            montaTr(
-                paciente.nome, 
-                paciente.peso,
-                paciente.altura,
-                paciente.gordura,
-                paciente.imc);
-        });
-   
+        
     })
+    request.send(); //envia a requisição criada
 })
 
 
