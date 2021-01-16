@@ -34,7 +34,6 @@ function criaPaciente(form){
     gordura: form.gordura.value,
     imc: calculaImc(form.peso.value, form.altura.value)
 }
-    console.log(paciente.imc);
     return paciente;
 }
 
